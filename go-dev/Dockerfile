@@ -9,14 +9,14 @@ RUN dnf install -y \
     make \
     automake \
     cmake \
-    wget \
     vim-minimal \
     vim-common \
     vim-enhanced \
     vim-X11 \
     python-devel \
-    cmake \
     tar \
+    wget \
+    httpie \
     && dnf clean all
 
 # Install Go
@@ -25,10 +25,8 @@ RUN curl -sSL  "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd6
 ENV PATH /go/bin:/usr/local/go/bin:$PATH
 ENV GOPATH /go
 
-RUN wget https://raw.githubusercontent.com/tthanh/dotfiles/master/vim/vimrc -O ~/.vimrc \
-    && mkdir -p ~/.vim/autoload \
-    && curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
+RUN git clone https://github.com/tthanh/dotfiles.git ~/.dotfiles \
+    && cd ~/.dotfiles && make docker \
     && vim +PlugInstall +qall \
     && vim +GoInstallBinaries +qall
 
