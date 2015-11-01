@@ -22,12 +22,12 @@ RUN dnf install -y \
 # Install Go
 ENV GO_VERSION 1.5.1
 RUN curl -sSL  "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz" | tar -v -C /usr/local -xz
-ENV PATH /go/bin:/usr/local/go/bin:$PATH
-ENV GOPATH /go
+ENV PATH=/go/bin:/usr/local/go/bin:$PATH GOPATH=/go
 
 RUN git clone https://github.com/tthanh/dotfiles.git ~/.dotfiles \
     && cd ~/.dotfiles && make docker \
     && vim +PlugInstall +qall \
-    && vim +GoInstallBinaries +qall
+    && vim +GoInstallBinaries +qall \
+    && mkdir -p /go/src/github.com/tthanh
 
-RUN mkdir -p /go/src/github.com/tthanh
+EXPOSE 8080
