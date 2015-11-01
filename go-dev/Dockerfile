@@ -13,6 +13,9 @@ RUN dnf install -y \
     vim-common \
     vim-enhanced \
     vim-X11 \
+    tmux \
+    ctags \
+    the_silver_searcher \
     python-devel \
     tar \
     wget \
