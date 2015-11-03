@@ -30,7 +30,7 @@ ENV PATH=/go/bin:/usr/local/go/bin:$PATH GOPATH=/go
 
 RUN pip install neovim
 RUN mkdir -p ~/.config/nvim
-RUN git clone https://github.com/tthanh/dotfiles.git ~/.dotfiles \
+RUN git clone --depth 1 https://github.com/tthanh/dotfiles.git ~/.dotfiles \
     && cd ~/.dotfiles && make docker-nvim
 RUN nvim +PlugInstall +qall 1>/dev/null 2>&1
 RUN nvim +GoInstallBinaries +qall 1>/dev/null 2>&1
