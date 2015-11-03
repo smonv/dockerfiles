@@ -9,17 +9,18 @@ RUN dnf install -y \
     make \
     automake \
     cmake \
-    vim-minimal \
-    vim-common \
-    vim-enhanced \
-    vim-X11 \
     tmux \
     ctags \
     the_silver_searcher \
     python-devel \
+    python-pip \
     tar \
     wget \
     httpie \
+    xclip \
+    dnf-plugins-core \
+    && dnf copr enable -y dperson/neovim \
+    && dnf install -y neovim \
     && dnf clean all
 
 # Install Go
@@ -27,10 +28,13 @@ ENV GO_VERSION 1.5.1
 RUN curl -sSL  "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz" | tar -v -C /usr/local -xz
 ENV PATH=/go/bin:/usr/local/go/bin:$PATH GOPATH=/go
 
+RUN pip install neovim
+RUN mkdir -p ~/.config/nvim
 RUN git clone https://github.com/tthanh/dotfiles.git ~/.dotfiles \
-    && cd ~/.dotfiles && make docker \
-    && vim +PlugInstall +qall \
-    && vim +GoInstallBinaries +qall \
-    && mkdir -p /go/src/github.com/tthanh
+    && cd ~/.dotfiles && make docker-nvim
+RUN nvim +PlugInstall +qall 1>/dev/null 2>&1
+RUN nvim +GoInstallBinaries +qall 1>/dev/null 2>&1
+RUN mkdir -p /go/src/github.com/tthanh
 
 EXPOSE 8080
+ENV TERM="xterm-256color"
