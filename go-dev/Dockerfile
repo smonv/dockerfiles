@@ -1,7 +1,8 @@
 FROM fedora:23
 MAINTAINER Tien Thanh <thanhvt1609@gmail.com>
 
-RUN dnf install -y \
+RUN dnf update -y \
+    && dnf install -y \
     git \
     gcc \
     gcc-c++ \
@@ -14,31 +15,31 @@ RUN dnf install -y \
     the_silver_searcher \
     python-devel \
     python-pip \
-    tar \
-    wget \
-    httpie \
     xclip \
     dnf-plugins-core \
     redhat-rpm-config \
-    && dnf clean all
+    golang \
+    && dnf clean all \
+    && rm -rf ~/.cache
 
 RUN dnf copr enable -y dperson/neovim \
     && dnf install -y neovim \
     && dnf clean all \
-    && pip install neovim
+    && pip install --no-cache-dir neovim \
+    && rm -rf ~/.cache
 
-# Install Go
-ENV GO_VERSION 1.5.1
-RUN curl -sSL  "https://storage.googleapis.com/golang/go${GO_VERSION}.linux-amd64.tar.gz" | tar -v -C /usr/local -xz
-ENV PATH=/usr/local/go/bin:/go/bin:$PATH GOPATH=/go
+RUN mkdir -p ~/ws/go/{src/github.com/tthanh,bin,pkg}
+ENV GOPATH=/root/ws/go \
+    PATH=$PATH:$GOPATH/bin \
+    TERM="xterm-256color"
 
 RUN mkdir -p ~/.config/nvim
 RUN git clone --depth 1 https://github.com/tthanh/dotfiles.git ~/.dotfiles \
     && cd ~/.dotfiles && make docker-nvim
-RUN nvim +PlugInstall +qall 1>/dev/null 2>&1
+RUN nvim +PlugInstall +qall 1>/dev/null 2>&1 \
+    && cd ~/.config/nvim/plugins/YouCompleteMe/third_party/ycmd/third_party \
+    && rm -rf {OmniSharpServer, gocode, jedi}
+
 RUN nvim +GoInstallBinaries +qall 1>/dev/null 2>&1
-RUN mkdir -p /go/src/github.com/tthanh
 
 EXPOSE 8080
-
-ENV TERM="xterm-256color"
