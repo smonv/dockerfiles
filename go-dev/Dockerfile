@@ -35,7 +35,7 @@ ENV GOPATH=/root/ws/go \
 
 RUN mkdir -p ~/.config/nvim
 RUN git clone --depth 1 https://github.com/tthanh/dotfiles.git ~/.dotfiles \
-    && cd ~/.dotfiles && make docker-nvim
+    && cd ~/.dotfiles && make docker
 RUN nvim +PlugInstall +qall 1>/dev/null 2>&1 \
     && cd ~/.config/nvim/plugins/YouCompleteMe/third_party/ycmd/third_party \
     && rm -rf {OmniSharpServer, gocode, jedi}
