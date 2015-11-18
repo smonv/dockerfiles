@@ -1,12 +1,9 @@
 FROM fedora:23
 MAINTAINER Tien Thanh <thanhvt1609@gmail.com>
 
-RUN dnf update -y \
-    && dnf install -y \
-    git \
+RUN dnf install -y git \
     gcc \
     gcc-c++ \
-    kernel-devel \
     make \
     automake \
     cmake \
@@ -22,7 +19,7 @@ RUN dnf update -y \
     && dnf clean all \
     && rm -rf ~/.cache
 
-RUN dnf copr enable -y dperson/neovim \
+RUN dnf copr enable -y dperson/neovim-head \
     && dnf install -y neovim \
     && dnf clean all \
     && pip install --no-cache-dir neovim \
