@@ -37,6 +37,8 @@ RUN nvim +PlugInstall +qall 1>/dev/null 2>&1 \
     && cd ~/.config/nvim/plugins/YouCompleteMe/third_party/ycmd/third_party \
     && rm -rf {OmniSharpServer, gocode, jedi}
 
-RUN nvim +GoInstallBinaries +qall 1>/dev/null 2>&1
+COPY init /usr/local/bin/init
 
 EXPOSE 8080
+
+CMD bash -C 'usr/local/bin/init';'bash'
