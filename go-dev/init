@@ -1,2 +1,5 @@
 #!/bin/bash
-nvim +GoInstallBinaries +qall
+
+if ! ls "$HOME/ws/go/bin/" 1>/dev/null 2>&1; then
+  nvim +GoInstallBinaries +qall
+fi

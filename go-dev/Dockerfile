@@ -27,7 +27,7 @@ RUN dnf copr enable -y dperson/neovim-head \
     && pip install --no-cache-dir neovim \
     && rm -rf ~/.cache
 
-RUN mkdir -p ~/ws/go/{src/github.com/tthanh,bin,pkg}
+RUN mkdir -p ~/ws/go
 ENV GOPATH=/root/ws/go \
     PATH=$PATH:$GOPATH/bin \
     TERM="xterm-256color"
