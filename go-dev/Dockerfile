@@ -16,6 +16,8 @@ RUN dnf install -y git \
     dnf-plugins-core \
     redhat-rpm-config \
     golang \
+    which \
+    tar \
     && dnf clean all \
     && rm -rf ~/.cache
 
